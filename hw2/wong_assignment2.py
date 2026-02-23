@@ -19,12 +19,20 @@ Output: List of postions where the read is found
 # Posted by sam46
 # Retrieved 2026-02-22, License - CC BY-SA 4.0
 
+from Bio import SeqIO
+
 string = 'ananaasnaaaaaaaaaana'
 fining = 'ana'
+
+
 def readFasta(filename): #Reads the fasta file and returns the sequence as a string
     """Reads a FASTA file and returns the sequence as a string"""
-    #TODO: Biopython
-    pass
+    seq_record = next(SeqIO.parse(filename, "fasta"))  #Only has one sample read                      
+    return seq_record.seq
+
+
+
+
 
 def suffixArray(s): #s object bcomes the sorted list object
     """Builds a suffix array for the given string s"""
@@ -67,10 +75,12 @@ def binarySearchRight(s, sa, find):
     
 def main(): #main function to run the read search
     """Runs the read search"""
-    sa = suffixArray(string)
-    left = binarySearchLeft(string, sa, fining)
-    right = binarySearchRight(string, sa, fining)
-    print(sorted(sa[left:right])) #indexes the suffix array from left to right and sorts it
+    genome = readFasta("Assignment2_refgenome.fasta") #Reads the reference genome fasta file
+    print(genome)
+    #sa = suffixArray(string)
+    #left = binarySearchLeft(string, sa, fining)
+    #right = binarySearchRight(string, sa, fining)
+    #print(sorted(sa[left:right])) #indexes the suffix array from left to right and sorts it
 
 
 if __name__ == "__main__":    
