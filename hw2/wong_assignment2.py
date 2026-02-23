@@ -21,25 +21,15 @@ Output: List of postions where the read is found
 
 from Bio import SeqIO
 
-string = 'ananaasnaaaaaaaaaana'
-fining = 'ana'
-
-
 def readFasta(filename): #Reads the fasta file and returns the sequence as a string
     """Reads a FASTA file and returns the sequence as a string"""
     seq_record = next(SeqIO.parse(filename, "fasta"))  #Only has one sample read                      
     return seq_record.seq
 
-
-
-
-
 def suffixArray(s): #s object bcomes the sorted list object
     """Builds a suffix array for the given string s"""
     sa = sorted(range(len(s)), key=lambda i: s[i:]) #Takes index of the string at i and sorts it by the suffix
     return list(sa)
-
-
 
 def binarySearchLeft(s, sa, find): 
     """Finds the lower bound of the suffix array
@@ -72,16 +62,24 @@ def binarySearchRight(s, sa, find):
         else:
             right = mid #We have already went past so we move left
     return left
-    
+
+def writeOutput(filename, positions): #Writes the output to a file
+    """Writes the output to a file
+    filename: name of the output file
+    positions: list of positions where the read is found"""
+    with open(filename, "w") as f:
+        for pos in positions:
+            f.write(str(pos) + "\n") #Writes each position on a new line
+
 def main(): #main function to run the read search
     """Runs the read search"""
     genome = readFasta("Assignment2_refgenome.fasta") #Reads the reference genome fasta file
-    print(genome)
-    #sa = suffixArray(string)
-    #left = binarySearchLeft(string, sa, fining)
-    #right = binarySearchRight(string, sa, fining)
-    #print(sorted(sa[left:right])) #indexes the suffix array from left to right and sorts it
-
+    read = readFasta("Assignment2_read.fasta") #Reads the read fasta file
+    sa = suffixArray(genome)
+    left = binarySearchLeft(genome, sa, read)
+    right = binarySearchRight(genome, sa, read)
+    indices = (sorted(sa[left:right])) #indexes the suffix array from left to right and sorts it
+    writeOutput("output.txt", indices)
 
 if __name__ == "__main__":    
     main()
