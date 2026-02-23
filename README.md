@@ -1,2 +1,2 @@
 # CS609
-Labs and HW from CS609 Class
+Labs and HW from CS609 Class.
